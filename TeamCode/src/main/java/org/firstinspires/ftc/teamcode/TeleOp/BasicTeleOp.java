@@ -42,12 +42,26 @@ public class BasicTeleOp extends TeleOpControl {
             }else if(gamepad1.dpad_left){
                 rob.foundationServo.setPosition(0.5);
             }
-
+            if(gamepad1.dpad_up){
+                rob.rightSuck.setPower(-0.8);
+                rob.leftSuck.setPower(0.8);
+                rob.smallRSuck.setPower(-1);
+                rob.smallLSuck.setPower(1);
+            }else if(gamepad1.dpad_down){
+                rob.rightSuck.setPower(0.8);
+                rob.leftSuck.setPower(-0.8);
+                rob.smallRSuck.setPower(1);
+                rob.smallLSuck.setPower(-1);
+            }else{
+                rob.rightSuck.setPower(0);
+                rob.leftSuck.setPower(0);
+            }
             if (gamepad1.y){
                 yToggle = !yToggle;
             }
 
             telemetry.addData("power", fb);
+            telemetry.addData("crawl", yToggle);
             telemetry.update();
 
             if (!yToggle) {
