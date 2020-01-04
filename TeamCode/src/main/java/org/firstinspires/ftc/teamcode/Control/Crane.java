@@ -247,7 +247,7 @@ public class Crane {
     }
 
     public void setupFoundation() throws InterruptedException{
-        foundationServo1 = servo(foundationServos1, Servo.Direction.FORWARD,0,1,0);
+        foundationServo1 = servo(foundationServos1, Servo.Direction.FORWARD,0,1,0.6);
         foundationServo2 = servo(foundationServos2, Servo.Direction.FORWARD,0,1,0.6);
     }
 

@@ -12,12 +12,14 @@ public class RedAutonomous extends AutonomousControl {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        setup(runtime, Crane.setupType.autonomous);
+        setup(runtime, Crane.setupType.drive, Crane.setupType.foundation);
 
         if(opModeIsActive()){
-            rob.driveTrainEncoderMovement(0.7, 3, 3, 2000, Crane.movements.forward);
-            rob.rightServo.setPosition(0.2);
-            rob.encodeCoreHexMovement(0.7, 3, 5, 100, Crane.movements.linearUp);
+            //rob.driveTrainEncoderMovement(0.7, 3, 3, 2000, Crane.movements.forward);
+            rob.foundationServo1.setPosition(0.9);
+            rob.foundationServo2.setPosition(0.1);
+
+            //rob.encodeCoreHexMovement(0.7, 3, 5, 100, Crane.movements.linearUp);
         }
     }
 }
