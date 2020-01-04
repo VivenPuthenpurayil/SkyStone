@@ -25,12 +25,12 @@ public class JustWheelsTeleOp extends TeleOpControl {
             if(gamepad1.left_trigger>.1){
                 rob.rightSuck.setPower(-1);
                 rob.leftSuck.setPower(1);
-                rob.smallRSuck.setPower(-1);
+                rob.smallRSuck.setPower(1);
                 rob.smallLSuck.setPower(-1);
             }else if(gamepad1.right_trigger>.1){
                 rob.rightSuck.setPower(1);
                 rob.leftSuck.setPower(-1);
-                rob.smallRSuck.setPower(1);
+                rob.smallRSuck.setPower(-1);
                 rob.smallLSuck.setPower(1);
             }else{
                 rob.rightSuck.setPower(0);
@@ -111,10 +111,12 @@ public class JustWheelsTeleOp extends TeleOpControl {
             }
 //check point
             if (gamepad2.y){
-                rob.rightServo.setPosition(rob.rightServo.getPosition() + 0.01);
+                rob.rightServo.setPosition(0.32);
             }
             else if (gamepad2.a){
-                rob.rightServo.setPosition(rob.rightServo.getPosition() - 0.01);
+                rob.rightServo.setPosition(0.45);
+            }else if(gamepad2.left_bumper){
+                rob.rightServo.setPosition(0.2);
             }
 
             telemetry.addData("right servo pos: ",  rob.rightServo.getPosition());
@@ -128,18 +130,12 @@ public class JustWheelsTeleOp extends TeleOpControl {
                 rob.extend.setPower(0);
             }
 
-            if (gamepad1.a){
-                rob.foundationServo1.setPosition(.6);
-                rob.foundationServo2.setPosition(0);
-                rob.encodeCoreHexMovement(0.8, 0.2, 3, 200, Crane.movements.linearUp, rob.rightLinear);
-                sleep(300);
-                rob.rotationservo.setPosition(.5);
-            }
+
 
             if(gamepad2.b){
-                rob.rotationservo.setPosition(rob.rotationservo.getPosition() - 0.0025);
+                rob.rotationservo.setPosition(rob.rotationservo.getPosition() - 0.0005);
             }else if (gamepad2.x) {
-                rob.rotationservo.setPosition(rob.rotationservo.getPosition() + 0.0025);
+                rob.rotationservo.setPosition(rob.rotationservo.getPosition() + 0.0005);
             }
 
             if(gamepad1.dpad_up){

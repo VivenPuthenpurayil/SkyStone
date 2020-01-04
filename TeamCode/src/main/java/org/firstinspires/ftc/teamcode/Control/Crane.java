@@ -239,16 +239,16 @@ public class Crane {
         //leftServo = servo(leftServos, Servo.Direction.REVERSE,0,1,0.5);
        // linearLimit = hardwareMap.digitalChannel.get(linearLimits);
         extend = motor(extendos, DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE);
-        rightServo = servo(rightServos, Servo.Direction.FORWARD,0,1,.2);
-        rotationservo = servo(rotationservos, Servo.Direction.FORWARD,0,1,1);
+        rightServo = servo(rightServos, Servo.Direction.FORWARD,0,1,0);
+        rotationservo = servo(rotationservos, Servo.Direction.FORWARD,0,1,0.73);
         clawLimit = hardwareMap.digitalChannel.get("clawLimit");
 
 
     }
 
     public void setupFoundation() throws InterruptedException{
-        foundationServo1 = servo(foundationServos2, Servo.Direction.FORWARD,0,1,0);
-        foundationServo2 = servo(foundationServos1, Servo.Direction.FORWARD,0,1,.6);
+        foundationServo1 = servo(foundationServos2, Servo.Direction.FORWARD,0,1,0.6);
+        foundationServo2 = servo(foundationServos1, Servo.Direction.FORWARD,0,1,0);
     }
 
     public void setupIntake() throws InterruptedException{
@@ -864,8 +864,8 @@ public class Crane {
     public enum movements {
         right(1, 1, -1, -1),
         left(-1, -1, 1, 1),
-        backward(1, -1, 1, -1),
-        forward(-1, 1, -1, 1),
+        backward(0.94, -0.94, 0.94, -0.94),
+        forward(-0.94, 0.94, -0.94, 0.94),
         tr(0, -1, 1, 0),
         tl(1, 0, 0, -1),
         bl(0, 1, -1, 0),
@@ -876,8 +876,8 @@ public class Crane {
         ccwback(1, 1, 0, 0),
         cwfront(0, 0, -1, -1),
         ccwfront(0, 0, 1, 1),
-        linearUp(1),
-        linearDown(-1),
+        linearUp(-1),
+        linearDown(1),
         clawOut(1),
         clawIn(-1);
 
