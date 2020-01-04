@@ -139,11 +139,11 @@ public class JustWheelsTeleOp extends TeleOpControl {
             }
 
             if(gamepad1.dpad_up){
-                rob.foundationServo1.setPosition(0);
-                rob.foundationServo2.setPosition(.7);
-            }else if (gamepad1.dpad_down) {
-                rob.foundationServo1.setPosition(.6);
+                rob.foundationServo1.setPosition(0.7);
                 rob.foundationServo2.setPosition(0);
+            }else if (gamepad1.dpad_down) {
+                rob.foundationServo1.setPosition(0);
+                rob.foundationServo2.setPosition(0.6);
             }
 
             telemetry.addData("rotation servo pos: ",  rob.rotationservo.getPosition());
