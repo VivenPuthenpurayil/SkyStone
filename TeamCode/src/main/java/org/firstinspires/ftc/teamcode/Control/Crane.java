@@ -116,7 +116,7 @@ public class Crane {
 
     }
 
-    // important non-configuration fields
+    // important non-confdiguration fields
     public ElapsedTime runtime;     //set in constructor to the runtime of running class
     public Central central;
     public HardwareMap hardwareMap;
