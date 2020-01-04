@@ -15,9 +15,9 @@ public class RedAutonomous extends AutonomousControl {
         setup(runtime, Crane.setupType.autonomous);
 
         if(opModeIsActive()){
-            rob.driveTrainEncoderMovement(0.7, 3,
-                    3, 2000, Crane.movements.forward);
-
+            rob.driveTrainEncoderMovement(0.7, 3, 3, 2000, Crane.movements.forward);
+            rob.rightServo.setPosition(0.2);
+            rob.encodeCoreHexMovement(0.7, 3, 5, 100, Crane.movements.linearUp);
         }
     }
 }
