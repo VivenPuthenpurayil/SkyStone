@@ -39,6 +39,14 @@ public class JustWheelsTeleOp extends TeleOpControl {
                 rob.smallLSuck.setPower(0);
             }
 
+            if(gamepad1.dpad_up){
+                rob.foundationServo1.setPosition(1);
+                rob.foundationServo2.setPosition(0);
+            }else if (gamepad1.dpad_down) {
+                rob.foundationServo1.setPosition(0.4);
+                rob.foundationServo2.setPosition(0.8);
+            }
+
             if (gamepad1.y){
                 yToggle = !yToggle;
             }
@@ -101,7 +109,7 @@ public class JustWheelsTeleOp extends TeleOpControl {
             }
 
             if(gamepad2.dpad_up){
-                rob.rightLinear.setPower(-0.5);
+                rob.rightLinear.setPower(-1);
             }
             else if (gamepad2.dpad_down){
                 rob.rightLinear.setPower(0.5);
@@ -110,40 +118,37 @@ public class JustWheelsTeleOp extends TeleOpControl {
                 rob.rightLinear.setPower(0);
             }
 //check point
-            if (gamepad2.y){
-                rob.rightServo.setPosition(0.32);
+            if (gamepad2.a){
+                rob.rightServo.setPosition(0.27);
             }
-            else if (gamepad2.a){
-                rob.rightServo.setPosition(0.45);
+            else if (gamepad2.y){
+                rob.rightServo.setPosition(0.4);
             }else if(gamepad2.left_bumper){
-                rob.rightServo.setPosition(0.2);
+                rob.rightServo.setPosition(0);
             }
 
             telemetry.addData("right servo pos: ",  rob.rightServo.getPosition());
 
             if (gamepad2.dpad_right){
-                rob.extend.setPower(0.2);
+                rob.extend.setPower(.5);
             }
             else if (gamepad2.dpad_left){
-                rob.extend.setPower(-0.2);
+                rob.extend.setPower(-0.5);
             }else{
                 rob.extend.setPower(0);
             }
 
-
+            if(gamepad2.right_trigger > 0.1){
+                rob.rightServo.setPosition(0.27);
+                rob.encodeCoreHexMovement(.8, 2, 5, 0, Crane.movements.linearUp);
+                rob.encodeCoreHexMovement(.8, 5, 5, 0, Crane.movements.clawOut);
+                rob.encodeCoreHexMovement(.8, 2, 5, 0, Crane.movements.linearDown);
+            }
 
             if(gamepad2.b){
                 rob.rotationservo.setPosition(rob.rotationservo.getPosition() - 0.0005);
             }else if (gamepad2.x) {
                 rob.rotationservo.setPosition(rob.rotationservo.getPosition() + 0.0005);
-            }
-
-            if(gamepad1.dpad_up){
-                rob.foundationServo1.setPosition(0.7);
-                rob.foundationServo2.setPosition(0);
-            }else if (gamepad1.dpad_down) {
-                rob.foundationServo1.setPosition(0);
-                rob.foundationServo2.setPosition(0.6);
             }
 
             telemetry.addData("rotation servo pos: ",  rob.rotationservo.getPosition());

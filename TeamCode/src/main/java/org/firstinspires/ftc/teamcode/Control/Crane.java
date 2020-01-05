@@ -247,8 +247,8 @@ public class Crane {
     }
 
     public void setupFoundation() throws InterruptedException{
-        foundationServo1 = servo(foundationServos1, Servo.Direction.FORWARD,0,1,0.6);
-        foundationServo2 = servo(foundationServos2, Servo.Direction.FORWARD,0,1,0.6);
+        foundationServo1 = servo(foundationServos1, Servo.Direction.FORWARD,0,1,1);
+        foundationServo2 = servo(foundationServos2, Servo.Direction.FORWARD,0,1,0);
     }
 
     public void setupIntake() throws InterruptedException{
@@ -754,23 +754,28 @@ public class Crane {
             stopDrivetrain();
         } catch (InterruptedException e) {
         }
+        central.sleep(5000);
 
-        while (calculateDifferenceBetweenAngles(end, getDirection()) > 1 && central.opModeIsActive()){
-            driveTrainMovement(0.2, (direction == turnside.cw) ? movements.ccw : movements.cw);
+        while (calculateDifferenceBetweenAngles(end, getDirection()) < -0.25 && central.opModeIsActive()) {
+            driveTrainMovement(0.05, (direction == turnside.cw) ? movements.ccw : movements.cw);
             central.telemetry.addLine("Correctional Try ");
             central.telemetry.addData("IMU Inital: ", start);
             central.telemetry.addData("IMU Final Projection: ", end);
             central.telemetry.addData("IMU Orient: ", getDirection());
-            central.telemetry.addData("IMU Diffnce: ", end - getDirection());
+            central.telemetry.addData("IMU Diffnce: ", calculateDifferenceBetweenAngles(end, getDirection()));
             central.telemetry.update();
+
         }
         stopDrivetrain();
+        central.sleep(5000);
+
         central.telemetry.addLine("Completed");
         central.telemetry.addData("IMU Inital: ", start);
         central.telemetry.addData("IMU Final Projection: ", end);
         central.telemetry.addData("IMU Orient: ", getDirection());
-        central.telemetry.addData("IMU Diffnce: ", end - getDirection());
+        central.telemetry.addData("IMU Diffnce: ", calculateDifferenceBetweenAngles(end, getDirection()));
         central.telemetry.update();
+        central.sleep(5000);
     }
     public void absturn(float target, turnside direction, double speed, axis rotation_Axis) throws InterruptedException{
 
@@ -812,7 +817,7 @@ public class Crane {
         }
 
         while (calculateDifferenceBetweenAngles(end, getDirection()) > 1 && central.opModeIsActive()){
-            driveTrainMovement(0.2, (direction == turnside.cw) ? movements.ccw : movements.cw);
+            driveTrainMovement(0.05, (direction == turnside.cw) ? movements.ccw : movements.cw);
             central.telemetry.addLine("Correctional Try ");
             central.telemetry.addData("IMU Inital: ", start);
             central.telemetry.addData("IMU Final Projection: ", end);
