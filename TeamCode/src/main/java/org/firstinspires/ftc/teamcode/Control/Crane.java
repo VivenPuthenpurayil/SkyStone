@@ -881,8 +881,8 @@ public class Crane {
         ccwback(1, 1, 0, 0),
         cwfront(0, 0, -1, -1),
         ccwfront(0, 0, 1, 1),
-        linearUp(-1),
-        linearDown(1),
+        linearUp(1),
+        linearDown(-1),
         clawOut(1),
         clawIn(-1);
 

@@ -21,7 +21,7 @@ public class BlueJanAuton extends AutonomousControl {
             rob.encodeCoreHexMovement(0.5, 4, 3, 0, Crane.movements.linearUp, rob.rightLinear);
             rob.encodeCoreHexMovement(0.5, 4.75, 3, 0, Crane.movements.clawOut, rob.extend);
             rob.rotationservo.setPosition(0.33);
-            rob.rightServo.setPosition(0.55);
+            rob.rightServo.setPosition(0.6);
             rob.driveTrainEncoderMovement(0.1, 15, 7, 0, Crane.movements.backward);
             do{
                 rob.driveTrainMovement(0.1, Crane.movements.backward);

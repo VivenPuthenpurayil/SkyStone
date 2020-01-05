@@ -109,10 +109,10 @@ public class JustWheelsTeleOp extends TeleOpControl {
             }
 
             if(gamepad2.dpad_up){
-                rob.rightLinear.setPower(-1);
+                rob.rightLinear.setPower(1);
             }
             else if (gamepad2.dpad_down){
-                rob.rightLinear.setPower(0.5);
+                rob.rightLinear.setPower(-0.5);
             }
             else {
                 rob.rightLinear.setPower(0);
@@ -122,7 +122,7 @@ public class JustWheelsTeleOp extends TeleOpControl {
                 rob.rightServo.setPosition(0.27);
             }
             else if (gamepad2.y){
-                rob.rightServo.setPosition(0.4);
+                rob.rightServo.setPosition(0.6);
             }else if(gamepad2.left_bumper){
                 rob.rightServo.setPosition(0);
             }
@@ -130,10 +130,10 @@ public class JustWheelsTeleOp extends TeleOpControl {
             telemetry.addData("right servo pos: ",  rob.rightServo.getPosition());
 
             if (gamepad2.dpad_right){
-                rob.extend.setPower(.5);
+                rob.extend.setPower(-0.5);
             }
             else if (gamepad2.dpad_left){
-                rob.extend.setPower(-0.5);
+                rob.extend.setPower(0.5);
             }else{
                 rob.extend.setPower(0);
             }

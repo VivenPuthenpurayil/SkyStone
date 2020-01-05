@@ -6,20 +6,25 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Control.AutonomousControl;
 import org.firstinspires.ftc.teamcode.Control.Crane;
 
-@Autonomous(name="Straight Left", group = "basic")
+@Autonomous(name="Straight Left", group = "AAA")
 public class straightLeft extends AutonomousControl {
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup(runtime, Crane.setupType.drive);
+        setup(runtime, Crane.setupType.drive, Crane.setupType.claw);
         telemetry.addLine("Start!");
         telemetry.update();
 
         if (opModeIsActive()){
-            rob.driveTrainEncoderMovement(0.2, 24, 5, 0, Crane.movements.forward);
-            rob.driveTrainEncoderMovement(0.2, 12, 5, 0, Crane.movements.left);
+            rob.encodeCoreHexMovement(0.5, 3, 3, 0, Crane.movements.linearUp, rob.rightLinear);
+            rob.encodeCoreHexMovement(0.5, 4.50, 3, 0, Crane.movements.clawOut, rob.extend);
+            rob.encodeCoreHexMovement(0.5, 4, 3, 0, Crane.movements.linearDown, rob.rightLinear);
+            rob.rotationservo.setPosition(0.33);
+            rob.rightServo.setPosition(0.55);
+            rob.driveTrainEncoderMovement(0.2, 21.5, 5, 0, Crane.movements.backward);
+            rob.driveTrainEncoderMovement(0.2, 40, 5, 0, Crane.movements.right);
 
         }
 
