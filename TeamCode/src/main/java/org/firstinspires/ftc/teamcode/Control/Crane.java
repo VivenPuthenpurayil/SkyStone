@@ -756,7 +756,7 @@ public class Crane {
         }
         central.sleep(5000);
 
-        while (calculateDifferenceBetweenAngles(end, getDirection()) < -0.25 && central.opModeIsActive()) {
+        while (calculateDifferenceBetweenAngles(end, getDirection()) > 0.25 && central.opModeIsActive()) {
             driveTrainMovement(0.05, (direction == turnside.cw) ? movements.ccw : movements.cw);
             central.telemetry.addLine("Correctional Try ");
             central.telemetry.addData("IMU Inital: ", start);
