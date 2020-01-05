@@ -43,8 +43,8 @@ public class JustWheelsTeleOp extends TeleOpControl {
                 rob.foundationServo1.setPosition(1);
                 rob.foundationServo2.setPosition(0);
             }else if (gamepad1.dpad_down) {
-                rob.foundationServo1.setPosition(0.4);
-                rob.foundationServo2.setPosition(0.8);
+                rob.foundationServo1.setPosition(0.45);
+                rob.foundationServo2.setPosition(0.75);
             }
 
             if (gamepad1.y){

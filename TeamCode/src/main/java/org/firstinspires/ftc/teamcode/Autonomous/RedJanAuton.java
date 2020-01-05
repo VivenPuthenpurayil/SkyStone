@@ -7,14 +7,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Control.AutonomousControl;
 import org.firstinspires.ftc.teamcode.Control.Crane;
 
-@Autonomous(name="Blue Block Autonomous", group = "AAA")
-public class BlueJanAuton extends AutonomousControl {
+@Autonomous(name="Red Block Autonomous", group = "AAA")
+public class RedJanAuton extends AutonomousControl {
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        setup(runtime, Crane.setupType.drive, Crane.setupType.foundation, Crane.setupType.claw, Crane.setupType.ultrasoinc
-        );
+        setup(runtime, Crane.setupType.drive, Crane.setupType.foundation, Crane.setupType.claw, Crane.setupType.ultrasoinc, Crane.setupType.imu);
 
         if(opModeIsActive()){
             double dist = 0;
@@ -53,24 +52,19 @@ public class BlueJanAuton extends AutonomousControl {
             rob.driveTrainEncoderMovement(0.5, 20, 3, 0, Crane.movements.cw);
 
             //      rob.turn(90, Crane.turnside.cw, .5, Crane.axis.center);
-            rob.driveTrainEncoderMovement(0.2, 24, 7, 0, Crane.movements.backward);
+            rob.driveTrainEncoderMovement(0.4, 24, 7, 0, Crane.movements.backward);
             rob.driveTrainEncoderMovement(0.15, 6, 7, 0, Crane.movements.backward);
 
             rob.encodeCoreHexMovement(0.5, 3, 2, 0, Crane.movements.linearDown, rob.rightLinear);
             rob.rightServo.setPosition(0.8);
             rob.encodeCoreHexMovement(0.5, 3, 2, 0, Crane.movements.linearUp, rob.rightLinear);
 
-            rob.foundationServo1.setPosition(0.4);
-            rob.foundationServo2.setPosition(0.8);
 
-            sleep(1000);
+            rob.driveTrainEncoderMovement(0.2, 10, 7, 0, Crane.movements.forward);
 
-            rob.driveTrainEncoderMovement(0.2, 20, 7, 0, Crane.movements.right);
-            rob.driveTrainEncoderMovement(0.2, 55, 7, 0, Crane.movements.forward);
+            rob.encodeCoreHexMovement(0.5, 4, 2, 0, Crane.movements.linearDown, rob.rightLinear);
 
-            //rob.encodeCoreHexMovement(0.5, 4, 2, 0, Crane.movements.linearDown, rob.rightLinear);
-
-            //rob.driveTrainEncoderMovement(0.5, 90, 7, 0, Crane.movements.left);
+            rob.driveTrainEncoderMovement(0.5, 50, 7, 0, Crane.movements.left);
 
 
         }
