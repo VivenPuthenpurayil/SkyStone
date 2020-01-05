@@ -13,14 +13,15 @@ public class RedJanAuton extends AutonomousControl {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        setup(runtime, Crane.setupType.drive, Crane.setupType.foundation, Crane.setupType.claw, Crane.setupType.ultrasoinc, Crane.setupType.imu);
+        setup(runtime, Crane.setupType.drive, Crane.setupType.foundation, Crane.setupType.claw, Crane.setupType.ultrasoinc
+        );
 
         if(opModeIsActive()){
             double dist = 0;
             rob.encodeCoreHexMovement(0.5, 4, 3, 0, Crane.movements.linearUp, rob.rightLinear);
             rob.encodeCoreHexMovement(0.5, 4.75, 3, 0, Crane.movements.clawOut, rob.extend);
             rob.rotationservo.setPosition(0.33);
-            rob.rightServo.setPosition(0.4);
+            rob.rightServo.setPosition(0.55);
             rob.driveTrainEncoderMovement(0.1, 15, 7, 0, Crane.movements.backward);
             do{
                 rob.driveTrainMovement(0.1, Crane.movements.backward);
@@ -29,14 +30,14 @@ public class RedJanAuton extends AutonomousControl {
                 telemetry.update();
 
             }
-            while(dist > 11.75 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
+            while(dist > 9 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
             rob.stopDrivetrain();
             rob.encodeCoreHexMovement(0.5, 5, 2.5, 0, Crane.movements.linearDown, rob.rightLinear);
             rob.rightServo.setPosition(0.27);
             rob.encodeCoreHexMovement(0.5, 2, 2, 0, Crane.movements.linearUp, rob.rightLinear);
             rob.driveTrainEncoderMovement(0.2, 6, 7, 0, Crane.movements.forward);
-            rob.driveTrainEncoderMovement(0.5, 20, 3, 0, Crane.movements.ccw);
-     //       rob.turn(90, Crane.turnside.ccw, .5, Crane.axis.center);
+            rob.driveTrainEncoderMovement(0.5, 20, 3, 0, Crane.movements.cw);
+            //       rob.turn(90, Crane.turnside.ccw, .5, Crane.axis.center);
             rob.encodeCoreHexMovement(0.5, 2, 2, 0, Crane.movements.linearDown, rob.rightLinear);
             rob.driveTrainEncoderMovement(0.5, 50, 7, 0, Crane.movements.backward);
             rob.encodeCoreHexMovement(0.5, 6, 4, 0, Crane.movements.linearUp, rob.rightLinear);
@@ -49,22 +50,27 @@ public class RedJanAuton extends AutonomousControl {
             }
             while(dist > 65 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
             rob.stopDrivetrain();
-            rob.driveTrainEncoderMovement(0.5, 20, 3, 0, Crane.movements.cw);
+            rob.driveTrainEncoderMovement(0.5, 20, 3, 0, Crane.movements.ccw);
 
             //      rob.turn(90, Crane.turnside.cw, .5, Crane.axis.center);
-            rob.driveTrainEncoderMovement(0.4, 24, 7, 0, Crane.movements.backward);
+            rob.driveTrainEncoderMovement(0.2, 24, 7, 0, Crane.movements.backward);
             rob.driveTrainEncoderMovement(0.15, 6, 7, 0, Crane.movements.backward);
 
             rob.encodeCoreHexMovement(0.5, 3, 2, 0, Crane.movements.linearDown, rob.rightLinear);
             rob.rightServo.setPosition(0.8);
             rob.encodeCoreHexMovement(0.5, 3, 2, 0, Crane.movements.linearUp, rob.rightLinear);
 
+            rob.foundationServo1.setPosition(0.4);
+            rob.foundationServo2.setPosition(0.8);
 
-            rob.driveTrainEncoderMovement(0.2, 10, 7, 0, Crane.movements.forward);
+            sleep(1000);
 
-            rob.encodeCoreHexMovement(0.5, 4, 2, 0, Crane.movements.linearDown, rob.rightLinear);
+            rob.driveTrainEncoderMovement(0.2, 20, 7, 0, Crane.movements.left);
+            rob.driveTrainEncoderMovement(0.2, 55, 7, 0, Crane.movements.forward);
 
-            rob.driveTrainEncoderMovement(0.5, 50, 7, 0, Crane.movements.left);
+            //rob.encodeCoreHexMovement(0.5, 4, 2, 0, Crane.movements.linearDown, rob.rightLinear);
+
+            //rob.driveTrainEncoderMovement(0.5, 90, 7, 0, Crane.movements.left);
 
 
         }
