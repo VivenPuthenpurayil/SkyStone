@@ -35,7 +35,8 @@ public class BlueJanAuton extends AutonomousControl {
             rob.rightServo.setPosition(0.27);
             rob.encodeCoreHexMovement(0.5, 2, 2, 0, Crane.movements.linearUp, rob.rightLinear);
             rob.driveTrainEncoderMovement(0.2, 6, 7, 0, Crane.movements.forward);
-            rob.turn(90, Crane.turnside.ccw, .5, Crane.axis.center);
+            rob.driveTrainEncoderMovement(0.5, 28.5, 3, 0, Crane.movements.ccw);
+     //       rob.turn(90, Crane.turnside.ccw, .5, Crane.axis.center);
             rob.encodeCoreHexMovement(0.5, 2, 2, 0, Crane.movements.linearDown, rob.rightLinear);
             rob.driveTrainEncoderMovement(0.5, 50, 7, 0, Crane.movements.backward);
             rob.encodeCoreHexMovement(0.5, 6, 4, 0, Crane.movements.linearUp, rob.rightLinear);
@@ -48,10 +49,19 @@ public class BlueJanAuton extends AutonomousControl {
             }
             while(dist > 65 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
             rob.stopDrivetrain();
-            rob.turn(90, Crane.turnside.cw, .5, Crane.axis.center);
-            rob.driveTrainEncoderMovement(0.4, 6, 7, 0, Crane.movements.backward);
+            rob.driveTrainEncoderMovement(0.5, 25, 3, 0, Crane.movements.cw);
+
+            //      rob.turn(90, Crane.turnside.cw, .5, Crane.axis.center);
+            rob.driveTrainEncoderMovement(0.4, 24, 7, 0, Crane.movements.backward);
+            rob.driveTrainEncoderMovement(0.15, 6, 7, 0, Crane.movements.backward);
+
             rob.encodeCoreHexMovement(0.5, 3, 2, 0, Crane.movements.linearDown, rob.rightLinear);
-            rob.rightServo.setPosition(0.4);
+            rob.rightServo.setPosition(0.8);
+            rob.encodeCoreHexMovement(0.5, 3, 2, 0, Crane.movements.linearUp, rob.rightLinear);
+
+
+            rob.driveTrainEncoderMovement(0.2, 10, 7, 0, Crane.movements.forward);
+
         }
     }
 }
