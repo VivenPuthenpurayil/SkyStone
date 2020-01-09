@@ -21,7 +21,7 @@ public class singlevalueVuf extends AutonomousControl {
     private ElapsedTime runtime = new ElapsedTime();
     private boolean target = false;
 
-    public void identify() throws InterruptedException{
+    public void identify() throws InterruptedException {
         for (VuforiaTrackable trackable : rob.allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(rob.robotFromCamera, rob.parameters.cameraDirection);
         }
@@ -38,7 +38,7 @@ public class singlevalueVuf extends AutonomousControl {
                         telemetry.addData("bad", "none");
                     }
                     break;
-                }else{
+                } else {
                     telemetry.addData("nothing seen", "none");
                 }
             }
@@ -75,35 +75,36 @@ public class singlevalueVuf extends AutonomousControl {
             Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
 
-            while((translation.get(1) / rob.mmPerInch) > 1) {
+            if ((translation.get(1) / rob.mmPerInch) > 1) {
                 telemetry.addData("move left", "none");
-                rob.driveTrainMovement(0.6, Crane.movements.left);
+                    rob.driveTrainMovement(0.2, Crane.movements.left);
             }
-            /*else if((translation.get(1)/rob.mmPerInch)<-1){
+            /*else if ((translation.get(1) / rob.mmPerInch) < -1) {
                 telemetry.addData("move right", "none");
                 rob.driveTrainMovement(0.6, Crane.movements.right);
                 sleep(5);
-            }else{
+            } else {
                 telemetry.addData("move direction", "none");
                 rob.stopDrivetrain();
             }
 
-            if((translation.get(0)/rob.mmPerInch)<-7 && (translation.get(1)/rob.mmPerInch)<1 && (translation.get(1)/rob.mmPerInch)>-1) {
+            if ((translation.get(0) / rob.mmPerInch) < -7 && (translation.get(1) / rob.mmPerInch) < 1 && (translation.get(1) / rob.mmPerInch) > -1) {
                 telemetry.addData("move back", "none");
                 rob.driveTrainMovement(0.5, Crane.movements.backward);
-            }else{
+            } else {
                 telemetry.addData("move nothing", "none");
                 rob.stopDrivetrain();
             }
-        }else {
-            telemetry.addData("Visible Target", "none");
-        }
-        rob.stopDrivetrain();
 
              */
-            telemetry.update();
         }
+
+
+        rob.stopDrivetrain();
+
+        telemetry.update();
     }
+
 
 
     @Override

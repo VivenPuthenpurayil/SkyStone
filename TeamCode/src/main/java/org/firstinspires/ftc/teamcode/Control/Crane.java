@@ -867,6 +867,7 @@ public class Crane {
 
     //-------------------CHOICE ENUMS-------------------------
     public enum movements {
+        // FR FL BR BL
         right(1, 1, -1, -1),
         left(-1, -1, 1, 1),
         backward(0.94, -0.94, 0.94, -0.94),
