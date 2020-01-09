@@ -747,7 +747,7 @@ public class Crane {
             central.telemetry.addData("IMU Inital: ", start);
             central.telemetry.addData("IMU Final Projection: ", end);
             central.telemetry.addData("IMU Orient: ", getDirection());
-            central.telemetry.addData("IMU Difference: ", end - getDirection());
+            central.telemetry.addData("IMU Difference: ", (calculateDifferenceBetweenAngles(end, getDirection())));
             central.telemetry.update();
         }
         try {
@@ -756,7 +756,7 @@ public class Crane {
         }
         central.sleep(5000);
 
-        while (calculateDifferenceBetweenAngles(end, getDirection()) > 0.25 && central.opModeIsActive()) {
+        while (calculateDifferenceBetweenAngles(end, getDirection()) < -0.25 && central.opModeIsActive()) {
             driveTrainMovement(0.05, (direction == turnside.cw) ? movements.ccw : movements.cw);
             central.telemetry.addLine("Correctional Try ");
             central.telemetry.addData("IMU Inital: ", start);
@@ -882,8 +882,8 @@ public class Crane {
         ccwback(1, 1, 0, 0),
         cwfront(0, 0, -1, -1),
         ccwfront(0, 0, 1, 1),
-        linearUp(-1),
-        linearDown(1),
+        linearUp(1),
+        linearDown(-1),
         clawOut(1),
         clawIn(-1);
 
