@@ -19,6 +19,18 @@ public abstract class TeleOpControl extends Central {
     public static float fb2;
     public static float rl2;
 
+    public static float yAxis3;
+    public static float xAxis3;
+
+    public static float yAxis4;
+    public static float xAxis4;
+
+    public static float fb3;
+    public static float rl3;
+
+    public static float fb4;
+    public static float rl4;
+
     public static double diagonalSpeed;
 
     public static boolean rightStickButtonPressed;
@@ -45,6 +57,24 @@ public abstract class TeleOpControl extends Central {
         fb2 = Math.abs(yAxis2)/3;
         rl2 = Math.abs(xAxis2)/3;
         diagonalSpeed = Math.hypot(xAxis2, yAxis2)/2;
+
+        yAxis3 = -gamepad2.right_stick_y; // Main Directions y-axis
+        xAxis3 = gamepad2.right_stick_x;  // Main Directions x-axis
+
+        yAxis4 = -gamepad1.left_stick_y; // Diagonal Directions y-axis
+        xAxis4 = gamepad1.left_stick_x;  // Diagonal Directions x-axis
+
+        yAxis3 = Range.clip(yAxis3, -1, 1);
+        xAxis3 = Range.clip(xAxis3, -1, 1);
+
+        yAxis4 = Range.clip(yAxis4, -1, 1);
+        xAxis4 = Range.clip(xAxis4, -1, 1);
+
+        fb3 = Math.abs(yAxis3);
+        rl3 = Math.abs(xAxis3);
+
+        fb4 = Math.abs(yAxis4);
+        rl4 = Math.abs(xAxis4);
 
         rightStickButtonPressed = gamepad1.right_stick_button;
         leftStickButtonPressed = gamepad1.left_stick_button;
@@ -77,6 +107,15 @@ public abstract class TeleOpControl extends Central {
                 gamepad1.left_stick_button, gamepad1.right_stick_button}[n]
 
                 && (n < 4 ? (validStick(xAxis1, yAxis1)) : (n >= 8 || validStick(xAxis2, yAxis2)));
+
+    }
+    public boolean f(int n){ // Returns whether
+
+        return new boolean[]{yAxis3 >= Math.abs(xAxis3), -Math.abs(yAxis3) > xAxis3, yAxis3 <= -Math.abs(xAxis3), Math.abs(yAxis3) < xAxis3,
+                yAxis4 >= 0 && xAxis4 >= 0, yAxis4 >= 0 && xAxis4 < 0, yAxis4 < 0 && xAxis4 < 0, yAxis4 < 0 && xAxis4 >= 0,
+                gamepad2.left_stick_button, gamepad2.right_stick_button}[n]
+
+                && (n < 4 ? (validStick(xAxis3, yAxis3)) : (n >= 8 || validStick(xAxis4, yAxis4)));
 
     }
     public void setMotorPower(double power, DcMotor... motors){

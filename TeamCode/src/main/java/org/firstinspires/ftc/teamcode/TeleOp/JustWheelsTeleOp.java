@@ -107,7 +107,7 @@ public class JustWheelsTeleOp extends TeleOpControl {
                     rob.stopDrivetrain();
                 }
             }
-
+/*
             if(gamepad2.dpad_up){
                 rob.rightLinear.setPower(1);
             }
@@ -117,39 +117,65 @@ public class JustWheelsTeleOp extends TeleOpControl {
             else {
                 rob.rightLinear.setPower(0);
             }
+
+ */
 //check point
             if (gamepad2.a){
-                rob.rightServo.setPosition(0.27);
+                rob.rightServo.setPosition(0.50);
             }
-            else if (gamepad2.y){
-                rob.rightServo.setPosition(0.6);
-            }else if(gamepad2.left_bumper){
-                rob.rightServo.setPosition(0);
+            else if (gamepad2.b){
+                rob.rightServo.setPosition(0.70);
+            }
+
+            if (gamepad2.y){
+                rob.rotationservo.setPosition(0.35);
+            }
+            else if (gamepad2.x){
+                rob.rotationservo.setPosition(0.02);
+            }
+
+            if(gamepad2.dpad_down){
+                while(rob.MaglimitSwitch.getState()){
+                    rob.rightLinear.setPower(0.5);
+                }
+            }else if(gamepad2.dpad_up){
+                while(rob.MaglimitSwitch.getState()){
+                    rob.rightLinear.setPower(-1);
+                }
+            }
+
+            if(gamepad2.right_trigger>0.5){
+                rob.rotationservo.setPosition(rob.rotationservo.getPosition() - 0.001);
+            }else if (gamepad2.left_trigger>0.5) {
+                rob.rotationservo.setPosition(rob.rotationservo.getPosition() + 0.001);
             }
 
             telemetry.addData("right servo pos: ",  rob.rightServo.getPosition());
 
+            if (f(0)) {
+                rob.rightLinear.setPower(-1);
+            } else if ((f(2) && rob.MaglimitSwitch.getState()) || (f(2) && gamepad2.left_bumper)){
+                rob.rightLinear.setPower(0.5);
+            } else if ((f(3)  && rob.MaglimitSwitch2.getState()) || (f(3) && gamepad2.left_bumper)) {
+                rob.extend.setPower(-0.5);
+            } else if (f(1)) {
+                rob.extend.setPower(0.5);
+            }else{
+                rob.extend.setPower(0);
+                rob.rightLinear.setPower(0);
+
+            }
+/*
             if (gamepad2.dpad_right){
                 rob.extend.setPower(-0.5);
             }
             else if (gamepad2.dpad_left){
                 rob.extend.setPower(0.5);
-            }else{
-                rob.extend.setPower(0);
             }
 
-            if(gamepad2.right_trigger > 0.1){
-                rob.rightServo.setPosition(0.27);
-                rob.encodeCoreHexMovement(.8, 2, 5, 0, Crane.movements.linearUp);
-                rob.encodeCoreHexMovement(.8, 5, 5, 0, Crane.movements.clawOut);
-                rob.encodeCoreHexMovement(.8, 2, 5, 0, Crane.movements.linearDown);
-            }
+ */
 
-            if(gamepad2.b){
-                rob.rotationservo.setPosition(rob.rotationservo.getPosition() - 0.0005);
-            }else if (gamepad2.x) {
-                rob.rotationservo.setPosition(rob.rotationservo.getPosition() + 0.0005);
-            }
+
 
             telemetry.addData("rotation servo pos: ",  rob.rotationservo.getPosition());
 

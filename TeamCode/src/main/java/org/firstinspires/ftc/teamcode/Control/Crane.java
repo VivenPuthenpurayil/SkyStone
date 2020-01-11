@@ -196,6 +196,7 @@ public class Crane {
     public DigitalChannel flimit;
     public DigitalChannel blimit;
     public DigitalChannel linearLimit, clawLimit;
+    public DigitalChannel MaglimitSwitch, MaglimitSwitch2;
 
     public double StrafetoTotalPower = 2.0/3.0;
 
@@ -239,10 +240,16 @@ public class Crane {
         //leftServo = servo(leftServos, Servo.Direction.REVERSE,0,1,0.5);
        // linearLimit = hardwareMap.digitalChannel.get(linearLimits);
         extend = motor(extendos, DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.BRAKE);
-        rightServo = servo(rightServos, Servo.Direction.FORWARD,0,1,0);
-        rotationservo = servo(rotationservos, Servo.Direction.FORWARD,0,1,0.73);
-        clawLimit = hardwareMap.digitalChannel.get("clawLimit");
+        rightServo = servo(rightServos, Servo.Direction.FORWARD,0,1,0.50);
+        rotationservo = servo(rotationservos, Servo.Direction.FORWARD,0,1,0.30);
+        //clawLimit = hardwareMap.digitalChannel.get("clawLimit");
+        MaglimitSwitch = hardwareMap.digitalChannel.get("clawLimit");
+        MaglimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+        MaglimitSwitch.setState(true);
 
+        MaglimitSwitch2 = hardwareMap.digitalChannel.get("clawLimit2");
+        MaglimitSwitch2.setMode(DigitalChannel.Mode.INPUT);
+        MaglimitSwitch2.setState(true);
 
     }
 
