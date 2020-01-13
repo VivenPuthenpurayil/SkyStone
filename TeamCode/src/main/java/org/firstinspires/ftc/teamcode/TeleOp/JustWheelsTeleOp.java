@@ -17,7 +17,7 @@ public class JustWheelsTeleOp extends TeleOpControl {
     public void runOpMode() throws InterruptedException {
         boolean yToggle = false;
 
-        setup(runtime, Crane.setupType.drive, Crane.setupType.intake, Crane.setupType.claw, Crane.setupType.foundation);
+        setup(runtime, Crane.setupType.drive, Crane.setupType.intake, Crane.setupType.claw, Crane.setupType.foundation, Crane.setupType.autonomous);
 
         while (opModeIsActive()){
             standardGamepadData();
@@ -152,14 +152,14 @@ public class JustWheelsTeleOp extends TeleOpControl {
 
             telemetry.addData("right servo pos: ",  rob.rightServo.getPosition());
 
-            if (f(0)) {
+            if ((f(0) && rob.MaglimitSwitch.getState()) || (f(0) && gamepad2.left_bumper)) {
                 rob.rightLinear.setPower(-1);
             } else if ((f(2) && rob.MaglimitSwitch.getState()) || (f(2) && gamepad2.left_bumper)){
                 rob.rightLinear.setPower(0.5);
             } else if ((f(3)  && rob.MaglimitSwitch2.getState()) || (f(3) && gamepad2.left_bumper)) {
-                rob.extend.setPower(-0.5);
-            } else if (f(1)) {
                 rob.extend.setPower(0.5);
+            } else if ((f(1)  && rob.MaglimitSwitch2.getState()) || (f(1) && gamepad2.left_bumper)) {
+                rob.extend.setPower(-0.5);
             }else{
                 rob.extend.setPower(0);
                 rob.rightLinear.setPower(0);

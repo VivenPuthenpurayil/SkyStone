@@ -38,7 +38,7 @@ public class singlevalueVuf extends AutonomousControl {
                         telemetry.addData("bad", "none");
                     }
                     break;
-                } else {
+                } else{
                     telemetry.addData("nothing seen", "none");
                 }
             }
@@ -77,17 +77,15 @@ public class singlevalueVuf extends AutonomousControl {
 
             if ((translation.get(1) / rob.mmPerInch) > 1) {
                 telemetry.addData("move left", "none");
-                    rob.driveTrainMovement(0.2, Crane.movements.left);
-            }
-            /*else if ((translation.get(1) / rob.mmPerInch) < -1) {
+                rob.driveTrainMovement(0.2, Crane.movements.left);
+            }else if ((translation.get(1) / rob.mmPerInch) < -1) {
                 telemetry.addData("move right", "none");
                 rob.driveTrainMovement(0.6, Crane.movements.right);
                 sleep(5);
-            } else {
+            }else {
                 telemetry.addData("move direction", "none");
                 rob.stopDrivetrain();
             }
-
             if ((translation.get(0) / rob.mmPerInch) < -7 && (translation.get(1) / rob.mmPerInch) < 1 && (translation.get(1) / rob.mmPerInch) > -1) {
                 telemetry.addData("move back", "none");
                 rob.driveTrainMovement(0.5, Crane.movements.backward);
@@ -95,8 +93,6 @@ public class singlevalueVuf extends AutonomousControl {
                 telemetry.addData("move nothing", "none");
                 rob.stopDrivetrain();
             }
-
-             */
         }
 
 

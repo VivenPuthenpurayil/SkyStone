@@ -73,6 +73,8 @@ public class Constants {
     public static final String leftsucks = "leftSuck";
     public static final String smallRSucks = "smallRSuck";
     public static final String smallLSucks = "smallLSuck";
+    public static final String autonDownClaws = "autonDownClaw";
+    public static final String autonGrabClaws = "autonGrabClaw";
     public static final String fronts = "frontUltra";
     public static final String backs = "backUltra";
     public static final String lefts = "leftUltra";
@@ -81,7 +83,7 @@ public class Constants {
     public static final String imuS = "imu";
 
 
-    public static final String encoderupS = "encoder";
+    public static final String encoderupS = "encoder"; 
 
 
 }

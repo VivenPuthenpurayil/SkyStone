@@ -118,6 +118,8 @@ public abstract class TeleOpControl extends Central {
                 && (n < 4 ? (validStick(xAxis3, yAxis3)) : (n >= 8 || validStick(xAxis4, yAxis4)));
 
     }
+
+
     public void setMotorPower(double power, DcMotor... motors){
         for (DcMotor b :
                 motors) {

@@ -39,6 +39,8 @@ import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_GOBUIL
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_INCH;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_MOTOR_GOBUILDA312RPM;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_MOTOR_REV;
+import static org.firstinspires.ftc.teamcode.Control.Constants.autonDownClaws;
+import static org.firstinspires.ftc.teamcode.Control.Constants.autonGrabClaws;
 import static org.firstinspires.ftc.teamcode.Control.Constants.backs;
 import static org.firstinspires.ftc.teamcode.Control.Constants.colors;
 import static org.firstinspires.ftc.teamcode.Control.Constants.extendos;
@@ -85,6 +87,7 @@ public class Crane {
                     break;
                 case autonomous:
                     setupDrivetrain();
+                    setupAutonClaw();
                     break;
                 case drive:
                     setupDrivetrain();
@@ -182,7 +185,7 @@ public class Crane {
     public int cameraMonitorViewId;
     public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-    public Servo servo;
+    public Servo servo, autonDownClaw, autonGrabClaw;
 
     public Servo rotationservo, rightServo, leftServo, foundationServo1, foundationServo2;
     public CRServo smallRSuck, smallLSuck;
@@ -266,6 +269,11 @@ public class Crane {
         smallLSuck = servo(smallLSucks, DcMotorSimple.Direction.FORWARD, 0);
 
         encoder(EncoderMode.OFF, rightSuck, leftSuck);
+    }
+
+    public void setupAutonClaw() throws InterruptedException{
+         autonDownClaw = servo(autonDownClaws, Servo.Direction.FORWARD,0,1,.7);
+         autonGrabClaw = servo(autonGrabClaws, Servo.Direction.FORWARD,0,1,0.40);
     }
 
     public void setupEncoder() throws InterruptedException{
@@ -891,8 +899,8 @@ public class Crane {
         ccwfront(0, 0, 1, 1),
         linearUp(1),
         linearDown(-1),
-        clawOut(1),
-        clawIn(-1);
+        clawOut(-1),
+        clawIn(1);
 
 
 
