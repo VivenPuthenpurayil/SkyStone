@@ -77,18 +77,18 @@ public class singlevalueVuf extends AutonomousControl {
 
             if ((translation.get(1) / rob.mmPerInch) > 1) {
                 telemetry.addData("move left", "none");
-                rob.driveTrainMovement(0.2, Crane.movements.left);
+                rob.driveTrainMovement(0.1, Crane.movements.forward);
             }else if ((translation.get(1) / rob.mmPerInch) < -1) {
                 telemetry.addData("move right", "none");
-                rob.driveTrainMovement(0.6, Crane.movements.right);
+                rob.driveTrainMovement(0.1, Crane.movements.backward);
                 sleep(5);
             }else {
                 telemetry.addData("move direction", "none");
                 rob.stopDrivetrain();
             }
-            if ((translation.get(0) / rob.mmPerInch) < -7 && (translation.get(1) / rob.mmPerInch) < 1 && (translation.get(1) / rob.mmPerInch) > -1) {
+            if ((translation.get(0) / rob.mmPerInch) < -2 && (translation.get(1) / rob.mmPerInch) < 1 && (translation.get(1) / rob.mmPerInch) > -1) {
                 telemetry.addData("move back", "none");
-                rob.driveTrainMovement(0.5, Crane.movements.backward);
+                rob.driveTrainMovement(0.6, Crane.movements.left);
             } else {
                 telemetry.addData("move nothing", "none");
                 rob.stopDrivetrain();
@@ -110,6 +110,7 @@ public class singlevalueVuf extends AutonomousControl {
         telemetry.addLine("Start!");
         telemetry.update();
 
+        rob.driveTrainEncoderMovement(0.6, 24, 5, 0, Crane.movements.left);
         identify();
 
         rob.targetsSkyStone.deactivate();

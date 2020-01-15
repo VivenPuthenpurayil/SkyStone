@@ -21,25 +21,145 @@ public class vuf extends AutonomousControl {
     private ElapsedTime runtime = new ElapsedTime();
     private boolean target = false;
 
-    public void identify() throws InterruptedException {
+    boolean moving1 = false;
+    boolean moving2 = false;
+    boolean moving3 = false;
+    int x = 0;
+    int y = 0;
+
+    public void identify1() throws InterruptedException {
         for (VuforiaTrackable trackable : rob.allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(rob.robotFromCamera, rob.parameters.cameraDirection);
         }
 
         rob.targetsSkyStone.activate();
-        while (opModeIsActive() && !target) {
+        while (opModeIsActive() && !target && !moving1) {
             for (VuforiaTrackable trackable : rob.allTrackables) {
                 if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
                     if (trackable.getName().equals("Stone Target")) {
+                        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                        if (robotLocationTransform != null) {
+                            rob.lastLocation = robotLocationTransform;
+                        }
                         telemetry.addData("good", "none");
-                        move();
-                    } else {
-                        telemetry.addData("bad", "none");
+                        // express position (translation) of robot in inches.
+                        VectorF translation = rob.lastLocation.getTranslation();
+                        telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                                translation.get(0) / rob.mmPerInch, translation.get(1) / rob.mmPerInch, translation.get(2) / rob.mmPerInch);
+
+                        // express the rotation of the robot in degrees.
+                        Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
+                        telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+
+                        if (((translation.get(1) / rob.mmPerInch) > 0.5)) {
+                            rob.driveTrainMovement(0.05, Crane.movements.forward);
+                        } else if((translation.get(1) / rob.mmPerInch) < 0.5) {
+                            rob.stopDrivetrain();
+                            moving1 = true;
+                            identify2();
+                            rob.driveTrainEncoderMovement(0.1, 2, 2, 0, Crane.movements.forward);
+                        }
+/*
+                        if (((translation.get(1) / rob.mmPerInch) < -1 && !moving2) && ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                            moving2 = true;
+                            rob.driveTrainMovement(0.05, Crane.movements.backward);
+                        } else if((translation.get(1) / rob.mmPerInch) > -1 && moving2) {
+                            moving2 = false;
+                            rob.stopDrivetrain();
+                        }
+
+                        if (((translation.get(0) / rob.mmPerInch) < -5  && !moving3) && ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                            moving3 = true;
+                            rob.driveTrainMovement(0.1, Crane.movements.left);
+                            x++;
+
+                        }else if ((translation.get(0) / rob.mmPerInch) > -5 && moving3){
+                            moving3 = false;
+                            rob.stopDrivetrain();
+                            y++;
+                        }
+
+
+ */
                     }
-                    break;
-                }else{
-                    telemetry.addData("nothing seen", "none");
+                    telemetry.addData("x: ", x);
+                    telemetry.addData("y: ", y);
+                        telemetry.update();
+
+            }else {
+                    telemetry.addData("bad", "none");
+                    }
+                }
+
+            telemetry.update();
+        }
+    }
+
+    public void identify2() throws InterruptedException {
+        for (VuforiaTrackable trackable : rob.allTrackables) {
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(rob.robotFromCamera, rob.parameters.cameraDirection);
+        }
+
+        rob.targetsSkyStone.activate();
+        while (opModeIsActive() && !target && !moving2) {
+            for (VuforiaTrackable trackable : rob.allTrackables) {
+                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                    if (trackable.getName().equals("Stone Target")) {
+                        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                        if (robotLocationTransform != null) {
+                            rob.lastLocation = robotLocationTransform;
+                        }
+                        telemetry.addData("good", "none");
+                        // express position (translation) of robot in inches.
+                        VectorF translation = rob.lastLocation.getTranslation();
+                        telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                                translation.get(0) / rob.mmPerInch, translation.get(1) / rob.mmPerInch, translation.get(2) / rob.mmPerInch);
+
+                        // express the rotation of the robot in degrees.
+                        Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
+                        telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+/*
+                        if (((translation.get(1) / rob.mmPerInch) > 1)) {
+                            moving1 = true;
+                            rob.driveTrainMovement(0.05, Crane.movements.forward);
+                        } else if((translation.get(1) / rob.mmPerInch) < 1) {
+                            moving1 = false;
+                            rob.stopDrivetrain();
+                        }
+*/
+
+                        if (((translation.get(1) / rob.mmPerInch) < -1.5)) {
+                            rob.driveTrainMovement(0.05, Crane.movements.backward);
+                        } else if((translation.get(1) / rob.mmPerInch) > -1.5) {
+                            rob.stopDrivetrain();
+                            moving2 = true;
+                            identify1();
+                            rob.driveTrainEncoderMovement(0.1, 2, 2, 0, Crane.movements.backward);
+
+                        }
+                        /*
+
+                        if (((translation.get(0) / rob.mmPerInch) < -5  && !moving3) && ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                            moving3 = true;
+                            rob.driveTrainMovement(0.1, Crane.movements.left);
+                            x++;
+
+                        }else if ((translation.get(0) / rob.mmPerInch) > -5 && moving3){
+                            moving3 = false;
+                            rob.stopDrivetrain();
+                            y++;
+                        }
+
+
+ */
+
+                    }
+                    telemetry.addData("x: ", x);
+                    telemetry.addData("y: ", y);
+                    telemetry.update();
+
+                }else {
+                    telemetry.addData("bad", "none");
                 }
             }
 
@@ -47,59 +167,70 @@ public class vuf extends AutonomousControl {
         }
     }
 
-    public void move() throws InterruptedException {
-        rob.targetVisible = false;
+    public void identify3() throws InterruptedException {
         for (VuforiaTrackable trackable : rob.allTrackables) {
-            if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                telemetry.addData("Visible Target", trackable.getName());
-                rob.targetVisible = true;
-
-                // getUpdatedRobotLocation() will return null if no new information is available since
-                // the last time that call was made, or if the trackable is not currently visible.
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
-                if (robotLocationTransform != null) {
-                    rob.lastLocation = robotLocationTransform;
-                }
-                break;
-            }
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(rob.robotFromCamera, rob.parameters.cameraDirection);
         }
 
-        // Provide feedback as to where the robot is located (if we know).
-        if (rob.targetVisible) {
-            // express position (translation) of robot in inches.
-            VectorF translation = rob.lastLocation.getTranslation();
-            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                    translation.get(0) / rob.mmPerInch, translation.get(1) / rob.mmPerInch, translation.get(2) / rob.mmPerInch);
+        rob.targetsSkyStone.activate();
+        while (opModeIsActive() && !target && !moving3) {
+            for (VuforiaTrackable trackable : rob.allTrackables) {
+                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                    if (trackable.getName().equals("Stone Target")) {
+                        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                        if (robotLocationTransform != null) {
+                            rob.lastLocation = robotLocationTransform;
+                        }
+                        telemetry.addData("good", "none");
+                        // express position (translation) of robot in inches.
+                        VectorF translation = rob.lastLocation.getTranslation();
+                        telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                                translation.get(0) / rob.mmPerInch, translation.get(1) / rob.mmPerInch, translation.get(2) / rob.mmPerInch);
 
-            // express the rotation of the robot in degrees.
-            Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
-            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+                        // express the rotation of the robot in degrees.
+                        Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
+                        telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+/*
+                        if (((translation.get(1) / rob.mmPerInch) > 1)) {
+                            moving1 = true;
+                            rob.driveTrainMovement(0.05, Crane.movements.forward);
+                        } else if((translation.get(1) / rob.mmPerInch) < 1) {
+                            moving1 = false;
+                            rob.stopDrivetrain();
+                        }
 
-            if(translation.get(1)>0) {
-                while(translation.get(1)>0.2) {
-                    //rob.driveTrainMovement(1, Crane.movements.right);
-                    telemetry.addData("move right", "none");
+
+                        if (((translation.get(1) / rob.mmPerInch) < -1)) {
+                            rob.driveTrainMovement(0.05, Crane.movements.backward);
+                        } else if((translation.get(1) / rob.mmPerInch) > -1) {
+                            rob.stopDrivetrain();
+                            moving2 = true;
+                        }
+                        */
+
+                        if (((translation.get(0) / rob.mmPerInch) < -7)) {
+                            rob.driveTrainMovement(0.1, Crane.movements.left);
+
+                        }else if ((translation.get(0) / rob.mmPerInch) > -7){
+                            rob.stopDrivetrain();
+                            moving3 = true;
+                        }
+
+
+
+                    }
+
+                }else {
+                    telemetry.addData("bad", "none");
                 }
-            }else if(translation.get(1)<0){
-                while(translation.get(1)<0.2) {
-                    //rob.driveTrainMovement(1, Crane.movements.left);
-                    telemetry.addData("move left", "none");
-                }
-            }else{
-                telemetry.addData("move straight", "none");
             }
 
-            if(translation.get(0)<-1) {
-                telemetry.addData("move up", "none");
-            }else{
-                telemetry.addData("move nothing", "none");
-            }
+            telemetry.update();
         }
-        else {
-            telemetry.addData("Visible Target", "none");
-        }
-        telemetry.update();
     }
+
+
+
 
 
     @Override
@@ -109,12 +240,12 @@ public class vuf extends AutonomousControl {
         telemetry.addLine("Start!");
         telemetry.update();
 
-        identify();
+        //rob.driveTrainEncoderMovement(0.4, 24, 5, 0, Crane.movements.left);
+        identify1();
+        identify2();
+        identify3();
 
         rob.targetsSkyStone.deactivate();
 
     }
 }
-
-
-
