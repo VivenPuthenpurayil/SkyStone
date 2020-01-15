@@ -18,9 +18,11 @@ public class basicOp extends AutonomousControl {
         telemetry.update();
 
         if (opModeIsActive()){
-            rob.driveTrainMovement(0.25, Crane.movements.right);
+
+            rob.driveTrainEncoderMovement(0.2, 40, 10, 50000, Crane.movements.right);
+            //rob.driveTrainMovement(0.25, Crane.movements.right);
             sleep(4000);
-            rob.driveTrainMovement(0.5, Crane.movements.forward);
+            //rob.driveTrainMovement(0.5, Crane.movements.forward);
             sleep(2500);
 
         }

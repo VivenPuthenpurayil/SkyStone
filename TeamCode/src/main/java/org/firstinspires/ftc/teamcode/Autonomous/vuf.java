@@ -51,13 +51,12 @@ public class vuf extends AutonomousControl {
                         Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
                         telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
 
-                        if (((translation.get(1) / rob.mmPerInch) > 0.5)) {
+                        if (((translation.get(1) / rob.mmPerInch) > 0.6)) {
                             rob.driveTrainMovement(0.05, Crane.movements.forward);
-                        } else if((translation.get(1) / rob.mmPerInch) < 0.5) {
+                        } else if((translation.get(1) / rob.mmPerInch) < 0.6) {
                             rob.stopDrivetrain();
                             moving1 = true;
                             identify2();
-                            rob.driveTrainEncoderMovement(0.1, 2, 2, 0, Crane.movements.forward);
                         }
 /*
                         if (((translation.get(1) / rob.mmPerInch) < -1 && !moving2) && ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -128,14 +127,12 @@ public class vuf extends AutonomousControl {
                         }
 */
 
-                        if (((translation.get(1) / rob.mmPerInch) < -1.5)) {
+                        if (((translation.get(1) / rob.mmPerInch) < -1.6)) {
                             rob.driveTrainMovement(0.05, Crane.movements.backward);
-                        } else if((translation.get(1) / rob.mmPerInch) > -1.5) {
+                        } else if((translation.get(1) / rob.mmPerInch) > -1.6) {
                             rob.stopDrivetrain();
                             moving2 = true;
                             identify1();
-                            rob.driveTrainEncoderMovement(0.1, 2, 2, 0, Crane.movements.backward);
-
                         }
                         /*
 
@@ -208,7 +205,7 @@ public class vuf extends AutonomousControl {
                         }
                         */
 
-                        if (((translation.get(0) / rob.mmPerInch) < -7)) {
+                        if (((translation.get(0) / rob.mmPerInch) < -5)) {
                             rob.driveTrainMovement(0.1, Crane.movements.left);
 
                         }else if ((translation.get(0) / rob.mmPerInch) > -7){
