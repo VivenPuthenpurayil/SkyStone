@@ -132,6 +132,16 @@ public class JustWheelsTeleOp extends TeleOpControl {
             }
             else if (gamepad2.x){
                 rob.rotationservo.setPosition(0.02);
+                rob.rightServo.setPosition(0.70);
+
+                while(rob.MaglimitSwitch2.getState()){
+                    rob.extend.setPower(-0.5);
+                }
+                rob.extend.setPower(0);
+                while(rob.MaglimitSwitch.getState()){
+                    rob.rightLinear.setPower(0.2);
+                }
+                rob.rightLinear.setPower(0);
             }
 
             if(gamepad2.dpad_down){

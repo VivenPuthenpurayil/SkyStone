@@ -24,6 +24,7 @@ public class vuf extends AutonomousControl {
     boolean moving1 = false;
     boolean moving2 = false;
     boolean moving3 = false;
+    boolean stop = false;
     int x = 0;
     int y = 0;
 
@@ -51,12 +52,14 @@ public class vuf extends AutonomousControl {
                         Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
                         telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
 
-                        if (((translation.get(1) / rob.mmPerInch) > 0.6)) {
-                            rob.driveTrainMovement(0.05, Crane.movements.forward);
-                        } else if((translation.get(1) / rob.mmPerInch) < 0.6) {
+                        if (((translation.get(1) / rob.mmPerInch) > 1)) {
+                            rob.driveTrainMovement(0.02, Crane.movements.forward);
+                        } else if ((translation.get(1) / rob.mmPerInch) < -1) {
+                            rob.driveTrainMovement(0.02, Crane.movements.backward);
+                        }
+                        else{
                             rob.stopDrivetrain();
-                            moving1 = true;
-                            identify2();
+                            moving1= true;
                         }
 /*
                         if (((translation.get(1) / rob.mmPerInch) < -1 && !moving2) && ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -83,12 +86,12 @@ public class vuf extends AutonomousControl {
                     }
                     telemetry.addData("x: ", x);
                     telemetry.addData("y: ", y);
-                        telemetry.update();
+                    telemetry.update();
 
-            }else {
+                } else {
                     telemetry.addData("bad", "none");
-                    }
                 }
+            }
 
             telemetry.update();
         }
@@ -127,13 +130,11 @@ public class vuf extends AutonomousControl {
                         }
 */
 
-                        if (((translation.get(1) / rob.mmPerInch) < -1.6)) {
-                            rob.driveTrainMovement(0.05, Crane.movements.backward);
-                        } else if((translation.get(1) / rob.mmPerInch) > -1.6) {
+                        if (((translation.get(1) / rob.mmPerInch) < -1)) {
+                            rob.driveTrainMovement(0.02, Crane.movements.backward);
+                        } else if ((translation.get(1) / rob.mmPerInch) > -1) {
                             rob.stopDrivetrain();
-                            moving2 = true;
-                            identify1();
-                        }
+                            moving2 = true; }
                         /*
 
                         if (((translation.get(0) / rob.mmPerInch) < -5  && !moving3) && ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -155,7 +156,7 @@ public class vuf extends AutonomousControl {
                     telemetry.addData("y: ", y);
                     telemetry.update();
 
-                }else {
+                } else {
                     telemetry.addData("bad", "none");
                 }
             }
@@ -206,18 +207,21 @@ public class vuf extends AutonomousControl {
                         */
 
                         if (((translation.get(0) / rob.mmPerInch) < -5)) {
-                            rob.driveTrainMovement(0.1, Crane.movements.left);
+                            rob.driveTrainMovement(0.05, Crane.movements.left);
 
-                        }else if ((translation.get(0) / rob.mmPerInch) > -7){
-                            rob.stopDrivetrain();
-                            moving3 = true;
+                        } else if ((translation.get(0) / rob.mmPerInch) > -3) {
+                            rob.driveTrainMovement(0.05, Crane.movements.right);
+
                         }
-
+                        else {
+                            rob.stopDrivetrain();
+                            moving3=true;
+                        }
 
 
                     }
 
-                }else {
+                } else {
                     telemetry.addData("bad", "none");
                 }
             }
@@ -226,23 +230,43 @@ public class vuf extends AutonomousControl {
         }
     }
 
+    public void goOn() throws InterruptedException {
+        for (VuforiaTrackable trackable : rob.allTrackables) {
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(rob.robotFromCamera, rob.parameters.cameraDirection);
+        }
 
+        rob.targetsSkyStone.activate();
+        while (opModeIsActive() && !target && !stop) {
+            for (VuforiaTrackable trackable : rob.allTrackables) {
+                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                    stop = true;
+                    telemetry.addData("oooo", "none");
+                }else {
+                    //x++;
+                    //telemetry.addData("oooo", x);
+                    //rob.driveTrainEncoderMovement(0.05, 3, 2, 0, Crane.movements.forward);
+                   // sleep(500);
+                    rob.driveTrainMovement(0.02, Crane.movements.forward);
+                }
 
-
-
-    @Override
-    public void runOpMode() throws InterruptedException {
-
-        setup(runtime, Crane.setupType.camera, Crane.setupType.drive);
-        telemetry.addLine("Start!");
-        telemetry.update();
-
-        //rob.driveTrainEncoderMovement(0.4, 24, 5, 0, Crane.movements.left);
-        identify1();
-        identify2();
-        identify3();
-
-        rob.targetsSkyStone.deactivate();
+                telemetry.update();
+            }
+        }
 
     }
-}
+        @Override
+        public void runOpMode () throws InterruptedException {
+
+            setup(runtime, Crane.setupType.camera, Crane.setupType.drive, Crane.setupType.autonomous, Crane.setupType.claw);
+            telemetry.addLine("Start!");
+            telemetry.update();
+
+            //rob.driveTrainEncoderMovement(0.4, 24, 5, 0, Crane.movements.left);
+            identify1();
+            identify3();
+
+            rob.targetsSkyStone.deactivate();
+
+        }
+    }
+
