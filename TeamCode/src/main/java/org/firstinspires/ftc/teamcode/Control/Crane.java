@@ -43,6 +43,7 @@ import static org.firstinspires.ftc.teamcode.Control.Constants.autonDownClaws;
 import static org.firstinspires.ftc.teamcode.Control.Constants.autonGrabClaws;
 import static org.firstinspires.ftc.teamcode.Control.Constants.backs;
 import static org.firstinspires.ftc.teamcode.Control.Constants.colors;
+import static org.firstinspires.ftc.teamcode.Control.Constants.encoderupS;
 import static org.firstinspires.ftc.teamcode.Control.Constants.extendos;
 import static org.firstinspires.ftc.teamcode.Control.Constants.foundationServos1;
 import static org.firstinspires.ftc.teamcode.Control.Constants.foundationServos2;
@@ -287,7 +288,7 @@ public class Crane {
     }
 
     public void setupEncoder() throws InterruptedException{
-        encoderup = motor(rightsucks, DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT);
+        encoderup = motor(encoderupS, DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT);
         rightSuck = motor(rightsucks, DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT);
         leftSuck = motor(leftsucks, DcMotorSimple.Direction.FORWARD, DcMotor.ZeroPowerBehavior.FLOAT);
 
@@ -879,6 +880,8 @@ public class Crane {
         autonomous, teleop, endgame, drive, camera, claw, bSystem, foundation, yellow, encoder, intake, ultrasoinc, imu;
     }
 
+
+
     //-------------------SET FUNCTIONS--------------------------------
     public void setCentral(Central central) {
         this.central = central;
@@ -944,7 +947,7 @@ public class Crane {
     public static double[] anyDirectionRadians(double speed, double angleRadians) {
     double theta = angleRadians;
     double beta = Math.atan(yToXRatio);
-    
+
     double v1 = speedAdjust * (speed * Math.sin(theta) / Math.sin(beta) + speed * Math.cos(theta) / Math.cos(beta));
     double v2 = speedAdjust * (speed * Math.sin(theta) / Math.sin(beta) - speed * Math.cos(theta) / Math.cos(beta));
 
