@@ -14,10 +14,15 @@ public class OdometryTest extends AutonomousControl {
     public void runOpMode() throws InterruptedException {
         //setup(runtime, Crane.setupType.encoder);
 
-        int startPosition = rob.rightSuck.getCurrentPosition();
+        int startPosition = rob.encoderup.getCurrentPosition();
+        int startPositionRS = rob.rightSuck.getCurrentPosition();
+        int startPositionLS = rob.leftSuck.getCurrentPosition();
         while(opModeIsActive()){
 
-            telemetry.addData("Current Position: ", rob.rightSuck.getCurrentPosition() - startPosition);
+            telemetry.addData("Current Encoder Position: ", rob.encoderup.getCurrentPosition() - startPosition);
+            telemetry.addData("Current RS Position: ", rob.rightSuck.getCurrentPosition() - startPositionRS);
+            telemetry.addData("Current LS Position: ", rob.leftSuck.getCurrentPosition() - startPositionLS);
+
             telemetry.update();
         }
     }
