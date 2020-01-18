@@ -23,6 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,12 +34,15 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static org.firstinspires.ftc.robotcore.external.tfod.TfodSkyStone.TFOD_MODEL_ASSET;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_COREHEXMOTOR_INCH;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_GOBUILDA312RPM_INCH;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_GOBUILDA312RPM_ROT;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_INCH;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_MOTOR_GOBUILDA312RPM;
 import static org.firstinspires.ftc.teamcode.Control.Constants.COUNTS_PER_MOTOR_REV;
+import static org.firstinspires.ftc.teamcode.Control.Constants.LABEL_FIRST_ELEMENT;
+import static org.firstinspires.ftc.teamcode.Control.Constants.LABEL_SECOND_ELEMENT;
 import static org.firstinspires.ftc.teamcode.Control.Constants.autonDownClaws;
 import static org.firstinspires.ftc.teamcode.Control.Constants.autonGrabClaws;
 import static org.firstinspires.ftc.teamcode.Control.Constants.backs;
@@ -186,6 +190,9 @@ public class Crane {
     public DcMotor leftSuck;
 
     public DcMotor encoderup;
+
+    public TFObjectDetector tfod;
+
 
     public  List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
     public VuforiaTrackables targetsSkyStone;
@@ -607,6 +614,31 @@ public class Crane {
             motor.setPower(0);
         }
     }
+
+
+    public void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = 0.8;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+
+        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+            initTfod();
+        } else {
+            central.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        }
+
+        /**
+         * Activate TensorFlow Object Detection before we wait for the start command.
+         * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
+         **/
+        if (tfod != null) {
+            tfod.activate();
+        }
+    }
+
     public void setupCamera() throws InterruptedException{
 
         float phoneXRotate    = 0;

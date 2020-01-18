@@ -82,6 +82,9 @@ public class Constants {
     public static final String colors = "colorSensor";
     public static final String imuS = "imu";
 
+    public static final String LABEL_FIRST_ELEMENT = "Stone";
+    public static final String LABEL_SECOND_ELEMENT = "Skystone";
+
 
     public static final String encoderupS = "encoder"; 
 
