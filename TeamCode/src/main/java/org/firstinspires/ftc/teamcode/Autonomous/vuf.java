@@ -20,6 +20,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 public class vuf extends AutonomousControl {
     private ElapsedTime runtime = new ElapsedTime();
+
     private boolean target = false;
 
     boolean moving1 = false;
@@ -29,6 +30,7 @@ public class vuf extends AutonomousControl {
     boolean straight = false;
     int x = 0;
     int y = 0;
+    int blockNumber = 0;
 
     public void identify1() throws InterruptedException {
         for (VuforiaTrackable trackable : rob.allTrackables) {
@@ -258,17 +260,11 @@ public class vuf extends AutonomousControl {
         }
 
     }
-        @Override
-        public void runOpMode () throws InterruptedException {
 
-            setup(runtime, Crane.setupType.camera, Crane.setupType.drive, Crane.setupType.autonomous, Crane.setupType.claw, Crane.setupType.ultrasoinc);
-            telemetry.addLine("Start!");
-            telemetry.update();
-            double dist = 0;
-            //goOn();
-            //rob.driveTrainEncoderMovement(0.4, 24, 5, 0, Crane.movements.left);
-/*
-            if(!straight) {
+    public void valueBased() throws InterruptedException{
+        double dist = 0;
+        switch(blockNumber){
+            case 1:
                 do {
                     rob.driveTrainMovement(0.1, Crane.movements.forward);
 
@@ -280,8 +276,8 @@ public class vuf extends AutonomousControl {
                 while (dist > 35 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
                 identify1();
                 identify3();
-            }
-            if(!straight) {
+                clawDown();
+            case 2:
                 do {
                     rob.driveTrainMovement(0.1, Crane.movements.forward);
 
@@ -293,8 +289,8 @@ public class vuf extends AutonomousControl {
                 while (dist > 28 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
                 identify1();
                 identify3();
-            }
-            if(!straight) {
+                clawDown();
+            case 3:
                 do {
                     rob.driveTrainMovement(0.1, Crane.movements.forward);
 
@@ -306,12 +302,34 @@ public class vuf extends AutonomousControl {
                 while (dist > 21 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
                 identify1();
                 identify3();
-            }
+                clawDown();
+        }
+    }
 
- */
+    public void clawDown() throws InterruptedException{
+        rob.autonGrabClaw.setPosition(0.4);
+        sleep(100);
+        rob.autonDownClaw.setPosition(1);
+        sleep(500);
+        rob.autonGrabClaw.setPosition(0.15);
+        sleep(100);
+        rob.autonDownClaw.setPosition(0.5);
+        sleep(100);
+    }
 
-        identify1();
-        identify3();
+
+        @Override
+        public void runOpMode () throws InterruptedException {
+
+            setup(runtime, Crane.setupType.camera, Crane.setupType.drive, Crane.setupType.autonomous, Crane.setupType.claw, Crane.setupType.ultrasoinc);
+            telemetry.addLine("Start!");
+            telemetry.update();
+            double dist = 0;
+            //goOn();
+            //rob.driveTrainEncoderMovement(0.4, 24, 5, 0, Crane.movements.left);
+
+            identify1();
+            identify3();
 
             rob.targetsSkyStone.deactivate();
 

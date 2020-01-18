@@ -124,6 +124,15 @@ public class Crane {
     public Central central;
     public HardwareMap hardwareMap;
 
+    public boolean target = false;
+    public boolean moving1 = false;
+    public boolean moving2 = false;
+    public boolean moving3 = false;
+    public boolean stop = false;
+    public boolean straight = false;
+    public int x = 0;
+    public int y = 0;
+    public int blockNumber = 0;
 
     public int[] wheelAdjust = {1, 1, 1, 1};
 
