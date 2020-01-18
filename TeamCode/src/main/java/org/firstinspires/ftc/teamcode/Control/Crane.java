@@ -200,12 +200,13 @@ public class Crane {
     public DigitalChannel blimit;
     public DigitalChannel linearLimit, clawLimit;
     public DigitalChannel MaglimitSwitch, MaglimitSwitch2;
+    public BNO055IMUImpl imu;
+
 
     public double StrafetoTotalPower = 2.0/3.0;
 
     //----       IMU        ----
 
-    public BNO055IMUImpl imu;
     public BNO055IMUImpl.Parameters imuparameters = new BNO055IMUImpl.Parameters();
     public Orientation current;
     public static boolean isnotstopped;

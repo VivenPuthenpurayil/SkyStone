@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -25,6 +26,7 @@ public class vuf extends AutonomousControl {
     boolean moving2 = false;
     boolean moving3 = false;
     boolean stop = false;
+    boolean straight = false;
     int x = 0;
     int y = 0;
 
@@ -52,7 +54,7 @@ public class vuf extends AutonomousControl {
                         Orientation rotation = Orientation.getOrientation(rob.lastLocation, EXTRINSIC, XYZ, DEGREES);
                         telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
 
-                        if (((translation.get(1) / rob.mmPerInch) > 1)) {
+                        if (((translation.get(1) / rob.mmPerInch) > 0.95)) {
                             rob.driveTrainMovement(0.02, Crane.movements.forward);
                         } else if ((translation.get(1) / rob.mmPerInch) < -1) {
                             rob.driveTrainMovement(0.02, Crane.movements.backward);
@@ -206,11 +208,13 @@ public class vuf extends AutonomousControl {
                         }
                         */
 
-                        if (((translation.get(0) / rob.mmPerInch) < -5)) {
+                        if (((translation.get(0) / rob.mmPerInch) < -4)) {
                             rob.driveTrainMovement(0.05, Crane.movements.left);
+                            straight = true;
 
                         } else if ((translation.get(0) / rob.mmPerInch) > -3) {
                             rob.driveTrainMovement(0.05, Crane.movements.right);
+                            straight = true;
 
                         }
                         else {
@@ -241,11 +245,11 @@ public class vuf extends AutonomousControl {
                 if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                     stop = true;
                     telemetry.addData("oooo", "none");
+                    rob.stopDrivetrain();
+                    sleep(5000);
                 }else {
-                    //x++;
-                    //telemetry.addData("oooo", x);
-                    //rob.driveTrainEncoderMovement(0.05, 3, 2, 0, Crane.movements.forward);
-                   // sleep(500);
+                    //rob.driveTrainEncoderMovement(0.1, 3, 2, 0, Crane.movements.forward);
+                    //sleep(5000);
                     rob.driveTrainMovement(0.02, Crane.movements.forward);
                 }
 
@@ -257,13 +261,57 @@ public class vuf extends AutonomousControl {
         @Override
         public void runOpMode () throws InterruptedException {
 
-            setup(runtime, Crane.setupType.camera, Crane.setupType.drive, Crane.setupType.autonomous, Crane.setupType.claw);
+            setup(runtime, Crane.setupType.camera, Crane.setupType.drive, Crane.setupType.autonomous, Crane.setupType.claw, Crane.setupType.ultrasoinc);
             telemetry.addLine("Start!");
             telemetry.update();
-
+            double dist = 0;
+            //goOn();
             //rob.driveTrainEncoderMovement(0.4, 24, 5, 0, Crane.movements.left);
-            identify1();
-            identify3();
+/*
+            if(!straight) {
+                do {
+                    rob.driveTrainMovement(0.1, Crane.movements.forward);
+
+                    dist = rob.front.getDistance(DistanceUnit.CM);
+                    telemetry.addData("cm front", "%.2f cm", dist);
+                    telemetry.update();
+
+                }
+                while (dist > 35 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
+                identify1();
+                identify3();
+            }
+            if(!straight) {
+                do {
+                    rob.driveTrainMovement(0.1, Crane.movements.forward);
+
+                    dist = rob.front.getDistance(DistanceUnit.CM);
+                    telemetry.addData("cm front", "%.2f cm", dist);
+                    telemetry.update();
+
+                }
+                while (dist > 28 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
+                identify1();
+                identify3();
+            }
+            if(!straight) {
+                do {
+                    rob.driveTrainMovement(0.1, Crane.movements.forward);
+
+                    dist = rob.front.getDistance(DistanceUnit.CM);
+                    telemetry.addData("cm front", "%.2f cm", dist);
+                    telemetry.update();
+
+                }
+                while (dist > 21 || Double.compare(dist, Double.NaN) == 0 && opModeIsActive());
+                identify1();
+                identify3();
+            }
+
+ */
+
+        identify1();
+        identify3();
 
             rob.targetsSkyStone.deactivate();
 
